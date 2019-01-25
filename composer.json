@@ -1,0 +1,19 @@
+{
+    "name": "dbatten5/textline-php",
+    "description": "PHP client for the Textline API",
+    "authors": [
+        {
+            "name": "Dom Batten",
+            "email": "dominic.batten@googlemail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Textline\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}
