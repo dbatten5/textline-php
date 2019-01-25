@@ -1,7 +1,8 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace Textline\Tests\Http\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Textline\Http\Response;
 
 class ResponseTest extends TestCase

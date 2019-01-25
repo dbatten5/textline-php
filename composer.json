@@ -12,7 +12,9 @@
             "Textline\\": "src/"
         }
     },
-    "require": {},
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^7.5"
     }
