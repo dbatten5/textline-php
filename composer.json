@@ -12,10 +12,17 @@
             "Textline\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "require": {
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "php-vcr/php-vcr": "^1.4",
+        "php-vcr/phpunit-testlistener-vcr": "^3.2"
     }
 }
