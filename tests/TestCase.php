@@ -22,4 +22,11 @@ abstract class TestCase extends BaseTestCase
 
         return $client;
     }
+
+    public function mock($class)
+    {
+        $mock = \Mockery::mock($class);
+
+        return $mock;
+    }
 }

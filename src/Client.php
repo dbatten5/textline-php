@@ -106,4 +106,14 @@ class Client
     {
         return $this->apiKey;
     }
+
+    /**
+     * Getter for token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
 }

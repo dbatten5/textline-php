@@ -50,7 +50,9 @@ class GuzzleClient implements Client
 
     public function setAuth(string $token)
     {
-        return $this->setHeader('X-TGP-ACCESS-TOKEN', $token);
+        $this->setHeader('X-TGP-ACCESS-TOKEN', $token);
+
+        return $this;
     }
 
     public function post(string $url, array $body = [], array $headers = [])
@@ -65,6 +67,8 @@ class GuzzleClient implements Client
 
     public function setHeader(string $header, string $value)
     {
-        return $this->headers[$header] = $value;
+        $this->headers[$header] = $value;
+
+        return $this;
     }
 }
