@@ -8,5 +8,5 @@ interface Client
 
     public function get(string $url, array $body = [], array $headers = []);
 
-    public function setHeaders(array $headers);
+    public function setHeader(string $header, string $value);
 }

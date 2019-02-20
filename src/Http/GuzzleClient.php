@@ -48,6 +48,11 @@ class GuzzleClient implements Client
         );
     }
 
+    public function setAuth(string $token)
+    {
+        return $this->setHeader('X-TGP-ACCESS-TOKEN', $token);
+    }
+
     public function post(string $url, array $body = [], array $headers = [])
     {
         return $this->request('post', $url, $body, $headers);
@@ -58,8 +63,8 @@ class GuzzleClient implements Client
         return $this->request('get', $url, $body, $headers);
     }
 
-    public function setHeaders(array $headers)
+    public function setHeader(string $header, string $value)
     {
-        return $this->headers = array_merge_recursive($this->headers, $headers);
+        return $this->headers[$header] = $value;
     }
 }

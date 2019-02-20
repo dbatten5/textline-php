@@ -2,8 +2,9 @@
 
 namespace Textline;
 
-use Textline\Http\Request;
+use Textline\Http\Client as HttpClient;
 use Textline\Resources\Conversations;
+use Textline\Http\GuzzleClient;
 
 class Client
 {
@@ -27,19 +28,36 @@ class Client
      */
     protected $token;
 
-    public function __construct(string $email, string $password, string $apiKey)
+    /**
+     * @var array
+     */
+    protected $headers;
+
+    /**
+     * @var HttpClient
+     */
+    protected $client;
+
+    /**
+     * @var string
+     */
+    protected $baseUri = 'https://application.textline.com/';
+
+    public function __construct(string $email, string $password, string $apiKey, string $token = null, array $headers = [], HttpClient $client = null)
     {
         $this->email = $email;
         $this->password = $password;
         $this->apiKey = $apiKey;
+        $this->token = $token;
+        $this->headers = $headers;
+        $this->client = $client ?? new GuzzleClient($this->baseUri, $this->headers);
 
-        $this->request = new Request();
-        $this->auth();
+        $token ? $this->client->setAuth($this->token) : $this->auth();
     }
 
     public function auth()
     {
-        $response = $this->request->curl->post('auth/sign_in.json', [
+        $response = $this->client->post('auth/sign_in.json', [
             'user' => [
                 'email' => $this->email,
                 'password' => $this->password,
@@ -49,12 +67,14 @@ class Client
 
         $this->token = $response->getContent()->access_token->token;
 
-        $this->request = new Request($this->token);
+        $this->client->setAuth($this->token);
+
+        return $this;
     }
 
     public function conversations()
     {
-        return new Conversations($this->request);
+        return new Conversations($this->client);
     }
 
     /**

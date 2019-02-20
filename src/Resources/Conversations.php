@@ -2,30 +2,31 @@
 
 namespace Textline\Resources;
 
-use Textline\Http\Request;
+use Textline\Http\Client as HttpClient;
 
 class Conversations
 {
     /**
-     * @var Request $request
+     * @var HttpClient $client
      */
-    protected $request;
+    protected $client;
 
-    public function __construct(Request $request)
+    public function __construct(HttpClient $client)
     {
-        $this->request = $request;
+        $this->client = $client;
     }
 
     public function list(array $params = [])
     {
-        $response = $this->request->curl->get('conversations.json')->getContent();
+        $response = $this->client->get('conversations.json')->getContent();
 
         return $response;
     }
 
-    public function retrieve(string $id, $params = [])
+    public function retrieve(string $id, array $params = [])
     {
-        $response = $this->request->curl->get("conversation/{$id}.json")->getContent();
+        $response = $this->client->get("conversation/{$id}.json")->getContent();
+
         return $response;
     }
 }
