@@ -16,15 +16,26 @@ class GuzzleClient implements Client
      */
     protected $headers;
 
-    public function __construct(string $baseUri, array $headers = [])
+    /**
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * @var GuzzleBaseClient
+     */
+    protected $client;
+
+    public function __construct(string $baseUri, array $headers = [], array $config = [])
     {
         $this->baseUri = $baseUri;
         $this->headers = $headers;
+        $this->config = $config;
 
-        $this->client = new GuzzleBaseClient([
+        $this->client = new GuzzleBaseClient(array_merge([
             'base_uri' => $this->baseUri,
             'headers' => $this->headers,
-        ]);
+        ], $config));
     }
 
     /**
@@ -70,5 +81,35 @@ class GuzzleClient implements Client
         $this->headers[$header] = $value;
 
         return $this;
+    }
+
+    /**
+     * Getter for baseUri
+     *
+     * @return string
+     */
+    public function getBaseUri()
+    {
+        return $this->baseUri;
+    }
+
+    /**
+     * Getter for headers
+     *
+     * @return string
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Getter for config
+     *
+     * @return string
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 }
