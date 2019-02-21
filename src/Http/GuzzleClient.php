@@ -46,12 +46,15 @@ class GuzzleClient implements Client
      * @param array $body
      * @author Dom Batten <db@mettrr.com>
      */
-    private function request(string $method, string $url, array $body = [], array $headers = [])
+    private function request(string $method, string $url, array $body = [], array $headers = [], array $query = [])
     {
-        $res = $this->client->request(strtoupper($method), $url, [
+        $requestParams = [
             'json' => $body,
             'headers' => array_merge($this->headers, $headers),
-        ]);
+            'query' => $query,
+        ];
+
+        $res = $this->client->request(strtoupper($method), $url, $requestParams);
 
         return new Response(
             $res->getStatusCode(),
@@ -71,9 +74,9 @@ class GuzzleClient implements Client
         return $this->request('post', $url, $body, $headers);
     }
 
-    public function get(string $url, array $body = [], array $headers = [])
+    public function get(string $url, array $query = [], array $headers = [])
     {
-        return $this->request('get', $url, $body, $headers);
+        return $this->request('get', $url, [], $headers, $query);
     }
 
     public function setHeader(string $header, string $value)
