@@ -37,9 +37,9 @@ class Response
      * @return string
      * @author Dom Batten <db@mettrr.com>
      */
-    public function getContent($object = false)
+    public function getContent($array = false)
     {
-        return json_decode($this->content, $object);
+        return json_decode($this->content, $array);
     }
 
     /**
