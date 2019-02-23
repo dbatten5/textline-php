@@ -12,4 +12,13 @@ class Conversations extends Resource
 
         return $response;
     }
+
+    public function messageByPhone(array $body = [])
+    {
+        $response = $this->client
+                         ->post('conversations.json', $body)
+                         ->getContent();
+
+        return $response;
+    }
 }

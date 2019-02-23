@@ -21,4 +21,18 @@ class Conversation extends Resource
 
         return $response;
     }
+
+    public function scheduleMessage(string $id, int $timestamp, string $body)
+    {
+        $response = $this->client
+                         ->post("conversation/{$id}/schedule.json", [
+                             'timestamp' => $timestamp,
+                             'comment' => [
+                                 'body' => $body
+                             ]
+                         ])
+                         ->getContent();
+
+        return $response;
+    }
 }

@@ -54,5 +54,30 @@ class ConversationTest extends TestCase
 
         $this->assertTrue($this->conversation->message('1', ['foo' => 'bar']));
     }
-}
 
+    /** @test */
+    public function it_can_schedule_a_message_to_a_conversation()
+    {
+        $id = '123';
+        $time = 456;
+        $body = 'foo';
+
+        $this->client
+            ->shouldReceive('post')
+            ->once()
+            ->with('conversation/123/schedule.json', [
+                'timestamp' => 456,
+                'comment' => [
+                    'body' => 'foo'
+                ]
+            ])
+            ->andReturn($this->response);
+
+        $this->response
+            ->shouldReceive('getContent')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($this->conversation->scheduleMessage($id, $time, $body));
+    }
+}

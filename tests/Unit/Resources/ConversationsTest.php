@@ -35,4 +35,31 @@ class ConversationsTest extends TestCase
 
         $this->assertTrue($this->conversations->list(['foo' => 'bar']));
     }
+
+    /** @test */
+    public function it_can_message_a_phone_number()
+    {
+        $this->client
+            ->shouldReceive('post')
+            ->once()
+            ->with('conversations.json', [
+                'phone_number' => '123',
+                'comment' => [
+                    'body' => 'foo'
+                ]
+            ])
+            ->andReturn($this->response);
+
+        $this->response
+            ->shouldReceive('getContent')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($this->conversations->messageByPhone([
+            'phone_number' => '123',
+            'comment' => [
+                'body' => 'foo'
+            ]
+        ]));
+    }
 }
