@@ -39,6 +39,7 @@ class GuzzleClient implements Client
         $this->client = new GuzzleBaseClient(array_merge([
             'base_uri' => $this->baseUri,
             'headers' => $this->headers,
+            'http_errors' => false,
         ], $config));
     }
 
@@ -58,35 +59,35 @@ class GuzzleClient implements Client
             'query' => $query,
         ];
 
-        try {
-            $res = $this->client->request(strtoupper($method), $url, $requestParams);
-        } catch (GuzzleClientException $e) {
-            switch ($e->getCode())
-            {
-                case 401:
-                    throw new AuthenticationException($e->getMessage());
-                    break;
+        $res = $this->client->request(strtoupper($method), $url, $requestParams);
 
-                case 404:
-                    return new Response(
-                        $e->getCode(),
-                        json_encode([
-                            'message' => 'Resource not found'
-                        ])
-                    );
-                    break;
+        $code = $res->getStatusCode();
+        $resBody = $res->getBody()->getContents();
 
-                default:
-                    throw new ClientException($e->getMessage(), $e->getCode());
-                    break;
-            }
-        } catch (GuzzleServerException $e) {
+        switch ($code)
+        {
+            // catch authentication exceptions as the rest of the app will fail
+            case 401:
+                throw new AuthenticationException($resBody);
+                break;
 
+            // 404 errors returned in html so make the response a bit more
+            // useable
+            case 404:
+                $resBody = json_encode([
+                    'success' => false,
+                    'error' => true,
+                    'message' => 'Resource not found'
+                ]);
+                break;
+
+            default:
+                break;
         }
 
         return new Response(
-            $res->getStatusCode(),
-            $res->getBody()->getContents(),
+            $code,
+            $resBody,
             $res->getHeaders()
         );
     }

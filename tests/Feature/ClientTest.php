@@ -4,6 +4,7 @@ namespace Tests;
 
 use Tests\Traits\MocksHttp;
 use Textline\Client;
+use Textline\Exceptions\AuthenticationException;
 use Textline\Http\Response;
 
 class ClientTest extends TestCase
@@ -32,5 +33,52 @@ class ClientTest extends TestCase
         $list = $client->conversations()->list();
 
         $this->assertEquals($list, json_decode($conversationsList));
+    }
+
+    /**
+     * @vcr invalid_key.yml
+     * @test
+     */
+    public function it_throws_an_exception_for_incorrect_api_key()
+    {
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('{"message":"Invalid API Key"}');
+
+        $client = new Client('a', 'b', 'c');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_for_incorrect_token()
+    {
+        $tokenResponse = '{"message":"Invalid access token"}';
+        $handler = $this->getMockHandler(
+            new Response(401, $tokenResponse)
+        );
+        $client = new Client('a', 'b', 'c', 'notatoken', [], null, ['handler' => $handler]);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('{"message":"Invalid access token"}');
+
+        $list = $client->conversations()->list();
+    }
+
+    /** @test */
+    public function it_will_return_a_nice_response_for_resource_not_found_errors()
+    {
+        $handler = $this->getMockHandler(
+            new Response(404, '')
+        );
+
+        $client = new Client('a', 'b', 'c', 'd', [], null, ['handler' => $handler]);
+
+        $conversation = $client->conversations()->retrieve('123');
+
+        $this->assertEquals($conversation, (object) [
+            'success' => false,
+            'error' => true,
+            'message' => 'Resource not found'
+        ]);
     }
 }
