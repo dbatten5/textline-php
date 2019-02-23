@@ -45,7 +45,13 @@ class Response
      */
     public function getContent($array = false)
     {
-        return json_decode($this->content, $array);
+        $content = json_decode($this->content, $array);
+
+        if (json_last_error() != JSON_ERROR_NONE) {
+            return $this->getRawContent();
+        }
+
+        return $content;
     }
 
     /**

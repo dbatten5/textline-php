@@ -3,6 +3,10 @@
 namespace Textline\Http;
 
 use GuzzleHttp\Client as GuzzleBaseClient;
+use GuzzleHttp\Exception\ClientException as GuzzleClientException;
+use GuzzleHttp\Exception\ServerException as GuzzleServerException;
+use Textline\Exceptions\ClientException;
+use Textline\Exceptions\AuthenticationException;
 
 class GuzzleClient implements Client
 {
@@ -54,7 +58,31 @@ class GuzzleClient implements Client
             'query' => $query,
         ];
 
-        $res = $this->client->request(strtoupper($method), $url, $requestParams);
+        try {
+            $res = $this->client->request(strtoupper($method), $url, $requestParams);
+        } catch (GuzzleClientException $e) {
+            switch ($e->getCode())
+            {
+                case 401:
+                    throw new AuthenticationException($e->getMessage());
+                    break;
+
+                case 404:
+                    return new Response(
+                        $e->getCode(),
+                        json_encode([
+                            'message' => 'Resource not found'
+                        ])
+                    );
+                    break;
+
+                default:
+                    throw new ClientException($e->getMessage(), $e->getCode());
+                    break;
+            }
+        } catch (GuzzleServerException $e) {
+
+        }
 
         return new Response(
             $res->getStatusCode(),
