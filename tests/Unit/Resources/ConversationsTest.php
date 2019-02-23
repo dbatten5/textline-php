@@ -35,42 +35,4 @@ class ConversationsTest extends TestCase
 
         $this->assertTrue($this->conversations->list(['foo' => 'bar']));
     }
-
-    /** @test */
-    public function it_can_retrieve_a_conversation()
-    {
-        $this->client
-            ->shouldReceive('get')
-            ->once()
-            ->with('conversation/1.json', [
-                'foo' => 'bar'
-            ])
-            ->andReturn($this->response);
-
-        $this->response
-            ->shouldReceive('getContent')
-            ->once()
-            ->andReturn(true);
-
-        $this->assertTrue($this->conversations->retrieve('1', ['foo' => 'bar']));
-    }
-
-    /** @test */
-    public function it_can_message_a_conversation()
-    {
-        $this->client
-            ->shouldReceive('post')
-            ->once()
-            ->with('conversation/1.json', [
-                'foo' => 'bar'
-            ])
-            ->andReturn($this->response);
-
-        $this->response
-            ->shouldReceive('getContent')
-            ->once()
-            ->andReturn(true);
-
-        $this->assertTrue($this->conversations->message('1', ['foo' => 'bar']));
-    }
 }

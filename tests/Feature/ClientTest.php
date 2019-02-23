@@ -73,7 +73,7 @@ class ClientTest extends TestCase
 
         $client = new Client('a', 'b', 'c', 'd', [], null, ['handler' => $handler]);
 
-        $conversation = $client->conversations()->retrieve('123');
+        $conversation = $client->conversation()->retrieve('123');
 
         $this->assertEquals($conversation, (object) [
             'success' => false,

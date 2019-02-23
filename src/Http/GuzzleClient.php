@@ -36,11 +36,11 @@ class GuzzleClient implements Client
         $this->headers = $headers;
         $this->config = $config;
 
-        $this->client = new GuzzleBaseClient(array_merge([
+        $this->client = new GuzzleBaseClient(array_merge($config, [
             'base_uri' => $this->baseUri,
             'headers' => $this->headers,
             'http_errors' => false,
-        ], $config));
+        ]));
     }
 
     /**
