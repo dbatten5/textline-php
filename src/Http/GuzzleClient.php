@@ -58,7 +58,8 @@ class GuzzleClient implements Client
 
         return new Response(
             $res->getStatusCode(),
-            $res->getBody()
+            $res->getBody()->getContents(),
+            $res->getHeaders()
         );
     }
 

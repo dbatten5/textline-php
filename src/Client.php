@@ -43,14 +43,14 @@ class Client
      */
     protected $baseUri = 'https://application.textline.com/';
 
-    public function __construct(string $email, string $password, string $apiKey, string $token = null, array $headers = [], HttpClient $client = null)
+    public function __construct(string $email, string $password, string $apiKey, string $token = null, array $headers = [], HttpClient $client = null, array $clientConfig = [])
     {
         $this->email = $email;
         $this->password = $password;
         $this->apiKey = $apiKey;
         $this->token = $token;
         $this->headers = $headers;
-        $this->client = $client ?? new GuzzleClient($this->baseUri, $this->headers);
+        $this->client = $client ?? new GuzzleClient($this->baseUri, $this->headers, $clientConfig);
 
         $token ? $this->client->setAuth($this->token) : $this->auth();
     }

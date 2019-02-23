@@ -14,10 +14,16 @@ class Response
      */
     protected $content;
 
-    public function __construct($statusCode, $content)
+    /**
+     * @var array
+     */
+    protected $headers;
+
+    public function __construct($statusCode, $content, $headers = [])
     {
         $this->statusCode = $statusCode;
         $this->content = $content;
+        $this->headers = $headers;
     }
 
     /**
@@ -40,6 +46,26 @@ class Response
     public function getContent($array = false)
     {
         return json_decode($this->content, $array);
+    }
+
+    /**
+     * Getter for rawContent
+     *
+     * @return string
+     */
+    public function getRawContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Getter for headers
+     *
+     * @return string
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     /**
