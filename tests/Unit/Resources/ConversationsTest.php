@@ -62,4 +62,31 @@ class ConversationsTest extends TestCase
             ]
         ]));
     }
+
+    /** @test */
+    public function it_can_schedule_a_message_by_phone_number()
+    {
+        $number = '123';
+        $time = 456;
+        $body = 'foo';
+
+        $this->client
+            ->shouldReceive('post')
+            ->once()
+            ->with('conversations/schedule.json', [
+                'timestamp' => 456,
+                'phone_number' => '123',
+                'comment' => [
+                    'body' => 'foo'
+                ]
+            ])
+            ->andReturn($this->response);
+
+        $this->response
+            ->shouldReceive('getContent')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($this->conversations->scheduleByPhone($number, $time, $body));
+    }
 }

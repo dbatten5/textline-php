@@ -35,4 +35,22 @@ class Conversation extends Resource
 
         return $response;
     }
+
+    public function resolve(string $id)
+    {
+        $response = $this->client
+                         ->post("conversation/{$id}/resolve.json")
+                         ->getContent();
+
+        return $response;
+    }
+
+    public function transfer(string $id)
+    {
+        $response = $this->client
+                         ->post("conversation/{$id}/transfer.json")
+                         ->getContent();
+
+        return $response;
+    }
 }

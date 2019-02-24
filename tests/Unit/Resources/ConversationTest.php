@@ -80,4 +80,23 @@ class ConversationTest extends TestCase
 
         $this->assertTrue($this->conversation->scheduleMessage($id, $time, $body));
     }
+
+    /** @test */
+    public function it_can_transfer_a_conversation()
+    {
+        $id = '123';
+
+        $this->client
+            ->shouldReceive('post')
+            ->once()
+            ->with('conversation/123/transfer.json')
+            ->andReturn($this->response);
+
+        $this->response
+            ->shouldReceive('getContent')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($this->conversation->transfer($id));
+    }
 }
