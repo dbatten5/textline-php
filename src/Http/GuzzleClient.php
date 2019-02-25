@@ -97,6 +97,11 @@ class GuzzleClient implements Client
         return $this->request('post', $url, $body, $headers);
     }
 
+    public function put(string $url, array $body = [], array $headers = [])
+    {
+        return $this->request('put', $url, $body, $headers);
+    }
+
     public function get(string $url, array $query = [], array $headers = [])
     {
         return $this->request('get', $url, [], $headers, $query);
