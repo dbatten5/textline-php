@@ -3,9 +3,12 @@
 namespace Textline;
 
 use Textline\Http\Client as HttpClient;
-use Textline\Resources\Conversations;
-use Textline\Resources\Conversation;
 use Textline\Http\GuzzleClient;
+use Textline\Resources\Conversation;
+use Textline\Resources\Conversations;
+use Textline\Resources\Customer;
+use Textline\Resources\Customers;
+use Textline\Resources\Organization;
 
 class Client
 {
@@ -88,6 +91,21 @@ class Client
     public function conversation()
     {
         return new Conversation($this->client);
+    }
+
+    public function customers()
+    {
+        return new Customers($this->client);
+    }
+
+    public function customer()
+    {
+        return new Customer($this->client);
+    }
+
+    public function organization()
+    {
+        return new Organization($this->client);
     }
 
     /**

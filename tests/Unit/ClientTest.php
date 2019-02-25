@@ -5,7 +5,11 @@ namespace Tests;
 use Textline\Client;
 use Textline\Http\Client as HttpClient;
 use Textline\Http\Response;
+use Textline\Resources\Conversation;
 use Textline\Resources\Conversations;
+use Textline\Resources\Customer;
+use Textline\Resources\Customers;
+use Textline\Resources\Organization;
 
 class ClientTest extends TestCase
 {
@@ -85,5 +89,69 @@ class ClientTest extends TestCase
         $client = new Client($email, $password, $key, $token, [], $clientMock);
 
         $this->assertInstanceOf(Conversations::class, $client->conversations());
+    }
+
+    /** @test */
+    public function it_can_return_a_conversation_resource()
+    {
+        $email = 'a';
+        $password = 'b';
+        $key = 'c';
+        $token = 'd';
+        $clientMock = $this->mock(HttpClient::class);
+
+        $clientMock->shouldReceive('setHeader');
+
+        $client = new Client($email, $password, $key, $token, [], $clientMock);
+
+        $this->assertInstanceOf(Conversation::class, $client->conversation());
+    }
+
+    /** @test */
+    public function it_can_return_a_customers_resource()
+    {
+        $email = 'a';
+        $password = 'b';
+        $key = 'c';
+        $token = 'd';
+        $clientMock = $this->mock(HttpClient::class);
+
+        $clientMock->shouldReceive('setHeader');
+
+        $client = new Client($email, $password, $key, $token, [], $clientMock);
+
+        $this->assertInstanceOf(Customers::class, $client->customers());
+    }
+
+    /** @test */
+    public function it_can_return_a_customer_resource()
+    {
+        $email = 'a';
+        $password = 'b';
+        $key = 'c';
+        $token = 'd';
+        $clientMock = $this->mock(HttpClient::class);
+
+        $clientMock->shouldReceive('setHeader');
+
+        $client = new Client($email, $password, $key, $token, [], $clientMock);
+
+        $this->assertInstanceOf(Customer::class, $client->customer());
+    }
+
+    /** @test */
+    public function it_can_return_a_organization_resource()
+    {
+        $email = 'a';
+        $password = 'b';
+        $key = 'c';
+        $token = 'd';
+        $clientMock = $this->mock(HttpClient::class);
+
+        $clientMock->shouldReceive('setHeader');
+
+        $client = new Client($email, $password, $key, $token, [], $clientMock);
+
+        $this->assertInstanceOf(Organization::class, $client->organization());
     }
 }
