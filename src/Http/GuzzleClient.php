@@ -92,13 +92,6 @@ class GuzzleClient implements Client
         );
     }
 
-    public function setAuth(string $token)
-    {
-        $this->setHeader('X-TGP-ACCESS-TOKEN', $token);
-
-        return $this;
-    }
-
     public function post(string $url, array $body = [], array $headers = [])
     {
         return $this->request('post', $url, $body, $headers);

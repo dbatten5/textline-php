@@ -53,7 +53,7 @@ class Client
         $this->headers = $headers;
         $this->client = $client ?? new GuzzleClient($this->baseUri, $this->headers, $clientConfig);
 
-        $token ? $this->client->setAuth($this->token) : $this->auth();
+        $token ? $this->setAuth($this->token) : $this->auth();
     }
 
     public function auth()
@@ -68,7 +68,14 @@ class Client
 
         $this->token = $response->getContent()->access_token->token;
 
-        $this->client->setAuth($this->token);
+        $this->setAuth($this->token);
+
+        return $this;
+    }
+
+    private function setAuth(string $token)
+    {
+        $this->client->setHeader('X-TGP-ACCESS-TOKEN', $token);
 
         return $this;
     }

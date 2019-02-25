@@ -19,9 +19,9 @@ class ClientTest extends TestCase
         $clientMock = $this->mock(HttpClient::class);
 
         $clientMock
-            ->shouldReceive('setAuth')
+            ->shouldReceive('setHeader')
             ->once()
-            ->with($token)
+            ->with('X-TGP-ACCESS-TOKEN', $token)
             ->andReturn(true);
 
         $client = new Client($email, $password, $key, $token, [], $clientMock);
@@ -61,9 +61,9 @@ class ClientTest extends TestCase
             ->andReturn($responseMock);
 
         $clientMock
-            ->shouldReceive('setAuth')
+            ->shouldReceive('setHeader')
             ->once()
-            ->with('token')
+            ->with('X-TGP-ACCESS-TOKEN', 'token')
             ->andReturn(true);
 
         $client = new Client($email, $password, $key, null, [], $clientMock);
@@ -80,7 +80,7 @@ class ClientTest extends TestCase
         $token = 'd';
         $clientMock = $this->mock(HttpClient::class);
 
-        $clientMock->shouldReceive('setAuth');
+        $clientMock->shouldReceive('setHeader');
 
         $client = new Client($email, $password, $key, $token, [], $clientMock);
 

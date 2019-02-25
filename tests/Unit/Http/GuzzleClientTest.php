@@ -28,18 +28,6 @@ class GuzzleClientTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_can_set_the_auth_header()
-    {
-        $guzzle = $this->getClient();
-
-        $guzzle->setAuth('token');
-
-        $this->assertEquals($guzzle->getHeaders(), [
-            'X-TGP-ACCESS-TOKEN' => 'token'
-        ]);
-    }
-
     private function getClient($base = 'base', $headers = [], $config = [])
     {
         $base = 'base';
