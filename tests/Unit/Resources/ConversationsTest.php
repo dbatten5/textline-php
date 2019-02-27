@@ -18,7 +18,7 @@ class ConversationsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_list_conversations()
+    public function it_can_get_conversations()
     {
         $this->client
             ->shouldReceive('get')
@@ -33,7 +33,7 @@ class ConversationsTest extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->conversations->list(['foo' => 'bar']));
+        $this->assertTrue($this->conversations->get(['foo' => 'bar']));
     }
 
     /** @test */
