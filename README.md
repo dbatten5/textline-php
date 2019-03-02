@@ -215,3 +215,11 @@ $client->orgnization()
 ```
 
 For a full list of available query options see [here](https://textline.docs.apiary.io/#reference/account/organization/organization-details)
+
+## Exceptions
+
+* If a conversation, customer or other resource identified with a `uuid` is not found, a `Textline\Exceptions\ResourceNotFoundException` will be thrown
+
+* If the rate limit is exceeded a `Textline\Exceptions\RateLimitException` will be thrown
+
+* For all other client errors, a generic `Textline\Exceptions\ClientException` will be thrown
