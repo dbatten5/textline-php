@@ -23,7 +23,7 @@ already know you token you may pass it in as the fourth argument.
 $apiKey = "ZZZZZZZZ"; // Your account api key
 $email = "agent@acme.com"; // Email address of the agent
 $password = "XXXXXX"; // Password associated with the email address above
-$token = 'YYYYYYYY'; // Can be left blank to make a request to get the token
+$token = 'YYYYYYYY'; // Can be left null
 
 $client = new Textline\Client($email, $password, $apiKey, $token);
 ```
@@ -51,6 +51,35 @@ $client->conversations()
        ->get($query);
 ```
 
+#### Message a phone number
+
+```php
+$number = '0781234567';
+$body = [
+    'comment' => [
+        'body' => 'foo'
+    ]
+];
+
+$client->conversations()
+       ->messageByPhone($number, $body);
+```
+For a list of a `$body` options see [here](https://textline.docs.apiary.io/#reference/conversations/phone-numbers/message-a-phone-number). Note that either `whisper` or `comment` must be specified in the request, but not both.
+
+#### Schedule a message by phone number
+
+```php
+$number = '07812345678';
+$timestamp = 1551528788; # unix timestamp
+$body = 'foo';
+$params = [
+    'group_uuid' => '123' # optional extra params
+];
+
+$client->conversations()
+       ->scheduleByPhone($number, $timestamp, $body, $params);
+```
+
 ### Conversation
 
 #### Retrieve a conversation
@@ -58,12 +87,11 @@ $client->conversations()
 ```php
 $uuid = 'abc-123';
 
-$client->conversations()
-       ->retrieve($uuid);
+$client->conversation($uuid)
+       ->retrieve();
 ```
 
 To add query parameters listed [here](https://textline.docs.apiary.io/#reference/conversations/conversation/retrieve-a-conversation) pass in an array of key values as the second argument.
-
 
 #### Message a conversation
 
@@ -80,6 +108,110 @@ $body = [
     ]
 ];
 
-$client->conversation()
-       ->message($uuid, $body);
+$client->conversation($uuid)
+       ->message($body);
 ```
+
+#### Schedule a message to a conversation
+
+```php
+$uuid = 'abc-123';
+$timestamp = 1551528788; # unix timestamp
+$body = 'foo';
+
+$client->conversation($uuid)
+       ->scheduleMessage($timestamp, $body);
+```
+
+#### Resolve a conversation
+
+```php
+$uuid = 'abd-123';
+
+$client->conversation($uuid)
+       ->resolve();
+```
+
+#### Transfer a conversation
+
+```php
+$uuid = 'abd-123';
+
+$client->conversation($uuid)
+       ->transfer();
+```
+
+### Customers
+
+#### List customers
+
+```php
+$client->customers()
+       ->get();
+```
+To add query parameters listed [here](https://textline.docs.apiary.io/#reference/customers/customers/list-customers) pass in an array of key values:
+
+```php
+$query = [
+    'page' => 1,
+    'page_size' => 20,
+    'query' => 'foo',
+];
+
+$client->customers()
+       ->get($query);
+```
+
+#### Create a customer
+
+```php
+$number = '07812345678';
+$attrs = [
+    'email' => 'john@mail.com',
+    'name' => 'John Mail',
+];
+
+$client->customers()
+       ->create($number, $attrs);
+```
+
+For a full list of attributes see [here](https://textline.docs.apiary.io/#reference/customers/customers/create-a-customer)
+
+### Customer
+
+#### Retrieve a customer
+
+```php
+$uuid = 'abc-123';
+
+$client->customer($uuid)
+       ->retrieve();
+```
+
+#### Update a customer
+
+```php
+$uuid = 'abc-123';
+$attrs = [
+    'name' => 'John Smith',
+    'email' => 'john@smith.com',
+];
+
+$client->customer($uuid)
+       ->update($attrs);
+```
+
+### Organization
+
+#### Retrieve organization details
+
+```php
+$query = [
+    'include_groups' => false,
+];
+
+$client->orgnization()
+       ->get($query);
+```
+
+For a full list of available query options see [here](https://textline.docs.apiary.io/#reference/account/organization/organization-details)
