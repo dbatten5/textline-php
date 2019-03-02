@@ -13,25 +13,27 @@ class Conversations extends Resource
         return $response;
     }
 
-    public function messageByPhone(array $body = [])
+    public function messageByPhone(string $number, array $body = [])
     {
         $response = $this->client
-                         ->post('conversations.json', $body)
+                         ->post('conversations.json', array_merge([
+                             'phone_number' => $number
+                         ], $body))
                          ->getContent();
 
         return $response;
     }
 
-    public function scheduleByPhone(string $number, int $timestamp, string $body)
+    public function scheduleByPhone(string $number, int $timestamp, string $comment, array $body = [])
     {
         $response = $this->client
-                         ->post("conversations/schedule.json", [
+                         ->post("conversations/schedule.json", array_merge([
                              'phone_number' => $number,
                              'timestamp' => $timestamp,
                              'comment' => [
-                                 'body' => $body
+                                 'body' => $comment
                              ]
-                         ])
+                         ], $body))
                          ->getContent();
 
         return $response;

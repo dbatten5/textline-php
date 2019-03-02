@@ -104,7 +104,7 @@ class ClientTest extends TestCase
 
         $client = new Client($email, $password, $key, $token, [], $clientMock);
 
-        $this->assertInstanceOf(Conversation::class, $client->conversation());
+        $this->assertInstanceOf(Conversation::class, $client->conversation('1'));
     }
 
     /** @test */
@@ -136,7 +136,7 @@ class ClientTest extends TestCase
 
         $client = new Client($email, $password, $key, $token, [], $clientMock);
 
-        $this->assertInstanceOf(Customer::class, $client->customer());
+        $this->assertInstanceOf(Customer::class, $client->customer('1'));
     }
 
     /** @test */

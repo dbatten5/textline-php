@@ -4,7 +4,7 @@ namespace Textline\Resources;
 
 class Customers extends Resource
 {
-    public function list(array $query = [])
+    public function get(array $query = [])
     {
         $response = $this->client
                          ->get('customers.json', $query)

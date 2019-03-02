@@ -88,9 +88,9 @@ class Client
         return new Conversations($this->client);
     }
 
-    public function conversation()
+    public function conversation(string $uuid)
     {
-        return new Conversation($this->client);
+        return new Conversation($this->client, $uuid);
     }
 
     public function customers()
@@ -98,9 +98,9 @@ class Client
         return new Customers($this->client);
     }
 
-    public function customer()
+    public function customer(string $uuid)
     {
-        return new Customer($this->client);
+        return new Customer($this->client, $uuid);
     }
 
     public function organization()

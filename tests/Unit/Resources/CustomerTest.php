@@ -12,8 +12,9 @@ class Test extends TestCase
     {
         parent::setUp();
 
+        $this->uuid = '123';
         $this->client = $this->mock(Client::class);
-        $this->customer = new Customer($this->client);
+        $this->customer = new Customer($this->client, $this->uuid);
         $this->response = $this->mock(Response::class);
     }
 
@@ -33,7 +34,7 @@ class Test extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->customer->retrieve($id));
+        $this->assertTrue($this->customer->retrieve());
     }
 
     /** @test */
@@ -54,7 +55,7 @@ class Test extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->customer->update($id, ['foo' => 'bar']));
+        $this->assertTrue($this->customer->update(['foo' => 'bar']));
     }
 }
 

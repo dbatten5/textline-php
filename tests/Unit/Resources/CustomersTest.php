@@ -33,7 +33,7 @@ class Test extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->customers->list(['foo' => 'bar']));
+        $this->assertTrue($this->customers->get(['foo' => 'bar']));
     }
 
     /** @test */

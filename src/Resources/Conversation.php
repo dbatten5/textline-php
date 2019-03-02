@@ -2,30 +2,44 @@
 
 namespace Textline\Resources;
 
+use Textline\Http\Client as HttpClient;
+
 class Conversation extends Resource
 {
-    public function retrieve(string $id, array $query = [])
+    /**
+     * @var string
+     */
+    protected $uuid;
+
+    public function __construct(HttpClient $client, string $uuid)
+    {
+        $this->uuid = $uuid;
+
+        parent::__construct($client);
+    }
+
+    public function retrieve(array $query = [])
     {
         $response = $this->client
-                         ->get("conversation/{$id}.json", $query)
+                         ->get("conversation/{$this->uuid}.json", $query)
                          ->getContent();
 
         return $response;
     }
 
-    public function message(string $id, array $body = [])
+    public function message(array $body = [])
     {
         $response = $this->client
-                         ->post("conversation/{$id}.json", $body)
+                         ->post("conversation/{$this->uuid}.json", $body)
                          ->getContent();
 
         return $response;
     }
 
-    public function scheduleMessage(string $id, int $timestamp, string $body)
+    public function scheduleMessage(int $timestamp, string $body)
     {
         $response = $this->client
-                         ->post("conversation/{$id}/schedule.json", [
+                         ->post("conversation/{$this->uuid}/schedule.json", [
                              'timestamp' => $timestamp,
                              'comment' => [
                                  'body' => $body
@@ -36,19 +50,19 @@ class Conversation extends Resource
         return $response;
     }
 
-    public function resolve(string $id)
+    public function resolve()
     {
         $response = $this->client
-                         ->post("conversation/{$id}/resolve.json")
+                         ->post("conversation/{$this->uuid}/resolve.json")
                          ->getContent();
 
         return $response;
     }
 
-    public function transfer(string $id)
+    public function transfer()
     {
         $response = $this->client
-                         ->post("conversation/{$id}/transfer.json")
+                         ->post("conversation/{$this->uuid}/transfer.json")
                          ->getContent();
 
         return $response;

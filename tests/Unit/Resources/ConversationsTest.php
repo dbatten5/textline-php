@@ -55,8 +55,7 @@ class ConversationsTest extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->conversations->messageByPhone([
-            'phone_number' => '123',
+        $this->assertTrue($this->conversations->messageByPhone('123', [
             'comment' => [
                 'body' => 'foo'
             ]

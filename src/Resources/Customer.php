@@ -2,21 +2,35 @@
 
 namespace Textline\Resources;
 
+use Textline\Http\Client as HttpClient;
+
 class Customer extends Resource
 {
-    public function retrieve(string $id)
+    /**
+     * @var string
+     */
+    protected $uuid;
+
+    public function __construct(HttpClient $client, string $uuid)
+    {
+        $this->uuid = $uuid;
+
+        parent::__construct($client);
+    }
+
+    public function retrieve()
     {
         $response = $this->client
-                         ->get("customer/{$id}.json")
+                         ->get("customer/{$this->uuid}.json")
                          ->getContent();
 
         return $response;
     }
 
-    public function update(string $id, array $body = [])
+    public function update(array $body = [])
     {
         $response = $this->client
-                         ->put("customer/{$id}.json", $body)
+                         ->put("customer/{$this->uuid}.json", $body)
                          ->getContent();
 
         return $response;

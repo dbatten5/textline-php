@@ -12,8 +12,9 @@ class ConversationTest extends TestCase
     {
         parent::setUp();
 
+        $this->uuid = '1';
         $this->client = $this->mock(Client::class);
-        $this->conversation = new Conversation($this->client);
+        $this->conversation = new Conversation($this->client, $this->uuid);
         $this->response = $this->mock(Response::class);
     }
 
@@ -33,7 +34,7 @@ class ConversationTest extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->conversation->retrieve('1', ['foo' => 'bar']));
+        $this->assertTrue($this->conversation->retrieve(['foo' => 'bar']));
     }
 
     /** @test */
@@ -52,20 +53,19 @@ class ConversationTest extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->conversation->message('1', ['foo' => 'bar']));
+        $this->assertTrue($this->conversation->message(['foo' => 'bar']));
     }
 
     /** @test */
     public function it_can_schedule_a_message_to_a_conversation()
     {
-        $id = '123';
         $time = 456;
         $body = 'foo';
 
         $this->client
             ->shouldReceive('post')
             ->once()
-            ->with('conversation/123/schedule.json', [
+            ->with('conversation/1/schedule.json', [
                 'timestamp' => 456,
                 'comment' => [
                     'body' => 'foo'
@@ -78,18 +78,16 @@ class ConversationTest extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->conversation->scheduleMessage($id, $time, $body));
+        $this->assertTrue($this->conversation->scheduleMessage($time, $body));
     }
 
     /** @test */
     public function it_can_transfer_a_conversation()
     {
-        $id = '123';
-
         $this->client
             ->shouldReceive('post')
             ->once()
-            ->with('conversation/123/transfer.json')
+            ->with('conversation/1/transfer.json')
             ->andReturn($this->response);
 
         $this->response
@@ -97,6 +95,23 @@ class ConversationTest extends TestCase
             ->once()
             ->andReturn(true);
 
-        $this->assertTrue($this->conversation->transfer($id));
+        $this->assertTrue($this->conversation->transfer());
+    }
+
+    /** @test */
+    public function it_can_resolve_a_conversation()
+    {
+        $this->client
+            ->shouldReceive('post')
+            ->once()
+            ->with('conversation/1/resolve.json')
+            ->andReturn($this->response);
+
+        $this->response
+            ->shouldReceive('getContent')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($this->conversation->resolve());
     }
 }
