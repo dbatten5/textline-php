@@ -15,7 +15,7 @@ composer require dbatten5/textline-php
 When initializing the client you must provide your api key (obtained
 [here](https://application.textline.com/organization/api_settings)) and email
 and password of the agent you want represented by your API requests. This will
-make a request to the Textline API to retrieve an authentication token which 
+make a requests to the Textline API to retrieve an authentication token which 
 will then be attached to all subsequent request to the api. If you already know 
 you token you may pass it in as the fourth argument.
 
